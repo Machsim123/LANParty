@@ -1,11 +1,9 @@
 #include "functii_temaaaa.h"
 
-#define nr_maxim 64
-
 int main()
 {
     FILE *d, *r;
-    int nr_echipe, i, j;
+    int nr_echipe, i, j, n;
     Echipa *head, *headcopy;
     head= headcopy;
     d=fopen("input.txt","r+t");
@@ -22,9 +20,10 @@ int main()
     // fprintf(r, "%s", head->nume_echipa);
     // fprintf(r, "%s", (head->next_echipa)->nume_echipa);
     headcopy=head;
-    for(j=0; j<nr_echipe; j++)
-        afisare_nume_echipe(&headcopy, r);
-
+    // for(j=0; j<nr_echipe; j++)
+    //     afisare_nume_echipe(&headcopy, r);
+    n = gasire_limita_echipe(nr_echipe);
+    // fprintf(r, "%d", n);
 
     return 0;
 }

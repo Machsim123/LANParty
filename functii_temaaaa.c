@@ -22,14 +22,15 @@ void citire_echipa(Echipa **head, FILE *fisier_input, FILE *fisier_output)
     // fprintf(fisier_output, "%s",(*head)->nume_echipa);
     for(j=0; j<(*head)->nr_membri; j++)
         {
-            citire_membri(&(head_copy_membri), fisier_input, fisier_output);
+            citire_membri(&(head_copy_membri), fisier_input, fisier_output,&((*head)->scor_echipa));
+            // fprintf(fisier_output, "%d\n", (*head)->scor_echipa);
             addAtBeginning_Membri(&((*head)->head_membri), head_copy_membri);
         }
     (*head)->next_echipa = NULL;
     // fprintf(fisier_output, "\n");
 }
 
-void citire_membri(Membri **head_membri, FILE *fisier_input, FILE *fisier_output)
+void citire_membri(Membri **head_membri, FILE *fisier_input, FILE *fisier_output, int *scor_echipa)
 {
     char nume_membru_buffer[lungime_max], prenume_membru_buffer[lungime_max];
     *head_membri=(Membri *)malloc(sizeof(Membri));
@@ -38,6 +39,7 @@ void citire_membri(Membri **head_membri, FILE *fisier_input, FILE *fisier_output
     prenume_membru_buffer[strlen(prenume_membru_buffer)] = '\0';
     // fprintf(fisier_output, "%s %s %d\n", nume_membru_buffer, prenume_membru_buffer, (*head_membri)->scor_membru);
     (*head_membri)->next_membru = NULL;
+    *scor_echipa += (*head_membri)->scor_membru;
 
 }
 
@@ -57,4 +59,12 @@ void afisare_nume_echipe(Echipa **head, FILE *fisier_output)
 {
         fprintf(fisier_output, "%s", (*head)->nume_echipa);
         *head= (*head)->next_echipa;
+}
+
+int gasire_limita_echipe(int nr_echipe)
+{
+    double i=0.0;
+    while( (pow(2.0,i)) < nr_echipe)
+        i = i + 1.0;
+    return ((int) i-1);
 }
