@@ -68,3 +68,69 @@ int gasire_limita_echipe(int nr_echipe)
         i = i + 1.0;
     return ((int) i-1);
 }
+
+void eliminare_echipe(Echipa **head, int nr, FILE *fisier_output)
+{
+    int mini= 40000;
+    Echipa **headcopy=**head;
+    while(nr!= 0)
+        {
+            mini= aflare_minim(*headcopy, fisier_output);
+            eliminare_partial(&headcopy, &nr, mini, fisier_output);
+            nr=0;
+        }
+}
+
+int aflare_minim(Echipa *head, FILE *fisier_output)
+{
+    int mini= head->scor_echipa, j=0;
+    head= head->next_echipa;
+    fprintf(fisier_output, "%d\n", mini);
+    while(head->next_echipa!=NULL)
+    {
+        if(head->scor_echipa < mini) mini= head->scor_echipa;
+        fprintf(fisier_output, "%d\n", mini);
+        head= head->next_echipa;
+        fprintf(fisier_output, "%d\n", j++);
+        fprintf(fisier_output, "%d\n", mini);
+    }
+    fprintf(fisier_output, "%d\n", mini);
+    return mini;
+}
+
+void eliminare_partial(Echipa **head, int *nr, int mini, FILE *fisier_output)
+{
+    Echipa *headcopy= *head;
+    if(headcopy->scor_echipa == mini)
+     eliminare_prima_structura(head);
+    while(headcopy->next_echipa!= NULL)
+        if((headcopy->next_echipa)->scor_echipa == mini)
+            eliminare_structura_oarecare(&headcopy);
+                else headcopy = headcopy->next_echipa;
+}
+
+void eliminare_prima_structura(Echipa **head)
+{
+    Echipa *headcopy = *head;
+    *head=(*head)->next_echipa;
+    free(headcopy);
+}
+
+void eliminare_structura_oarecare(Echipa **head)
+{
+    Echipa *headcopy = *head;
+    (*head)->next_echipa= ((*head)->next_echipa)->next_echipa;
+    free(headcopy->next_echipa);
+}
+
+// void afisare_echipe(Echipa **head, FILE *fisier_output)
+// {
+//     fprintf("%d %s%d\n", (*head)->nr_membri, (*head)->nume_echipa, (*head)->scor_echipa);
+//     afisare_membri((*head)->head_membri, fisier_output);
+//     fprintf("\n\n");
+// }
+
+// void afisare_membri(Membri *head, FILE *fisier_output)
+// {
+//     fprintf("%s %s %d",head->nume_membru, head->prenume_membru, head->scor_membru);
+// }
