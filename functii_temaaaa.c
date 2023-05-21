@@ -85,13 +85,14 @@ void scoatere_echipe(Echipa **head, int nr, FILE *fisier_output)
     // fprintf(fisier_output, "%d %s", headcopy->nr_membri, headcopy->nume_echipa);
     while(nr!=0)
         {
-            headcopy= (*head);
+            // headcopy= (*head);
             aflare_minim(headcopy, &mini, fisier_output);
 
             fprintf(stdout, "mini=%f\n", mini);
             
-            // scoatere_efectiva(&headcopy, mini, fisier_output, &nr);
-            nr--;
+            scoatere_efectiva(&headcopy, mini, fisier_output, &nr);
+            // fprintf(fisier_output, "\n\n\n\n\n\n IESIM DIN WHILE!\n");
+            // nr--;
         }
 }
 
@@ -105,36 +106,70 @@ void aflare_minim(Echipa *head, double *mini, FILE *fisier_output)
         if(head->scor_echipa < (*mini))
              *mini = head->scor_echipa;
         head=head->next_echipa;
-        //fprintf(fisier_output, "%f\n", *mini);
+        fprintf(fisier_output, "mini=%f\n", *mini);
     }
     // fprintf(fisier_output, "\n\n");
 }
 
-void scoatere_efectiva(Echipa **head, int mini, FILE *fisier_output, int *nr)
+void scoatere_efectiva(Echipa **head, double mini, FILE *fisier_output, int *nr)
 {
     Echipa *headcopy= *head;
     if(headcopy->scor_echipa == mini)
         while(headcopy->scor_echipa == mini && headcopy!=NULL && (*nr)!=0)
             {
-                // scoatere_prima_echipa(&headcopy, fisier_output);
-                (*nr)--;
+                scoatere_prima_echipa(&headcopy, fisier_output);
+                *nr = (*nr) -1;
                 fprintf(fisier_output, "SUNT IN WHILE!\n");
             }
-    else fprintf(fisier_output, "N-AM FOST IN WHILE!\n");
-    // if(headcopy->next_echipa==NULL) return;
-    // while((headcopy->next_echipa)->next_echipa!= NULL && (*nr)!=0)
-    //     {
-    //         if((headcopy->next_echipa)->scor_echipa == mini) 
-    //             {
-    //                 // scoatere_echipa_mijloc(&headcopy, fisier_output);
-    //                 (*nr)--;
-    //             }
-    //         headcopy= headcopy->next_echipa;
-    //     }
+    // else fprintf(fisier_output, "N-AM FOST IN WHILE!\n");
+    if(headcopy->next_echipa==NULL)
+    {
+        // fprintf(fisier_output,"SUNT NULL :(\n");
+        return;
+    }
+    // fprintf(fisier_output,"INTRARE!\n");
+    while((headcopy->next_echipa)->next_echipa!= NULL && (*nr)!=0)
+        {
+            if((headcopy->next_echipa)->scor_echipa == mini) 
+                {
+                    fprintf(fisier_output,"mini= %f; SMECHERIE \n", mini);
+                    scoatere_echipa_mijloc(&headcopy, fisier_output);
+                    *nr = (*nr) -1;
+                }
+            else headcopy= headcopy->next_echipa;
+            // *nr= 0;
+        }
+    fprintf(fisier_output, "GATA TREABA!\n");
     // if((headcopy->next_echipa)->scor_echipa == mini && (*nr)!=0) 
     //     {
-    //         // scoatere_ultima_echipa(&headcopy, fisier_output);
-    //         (*nr)--;
+    //         fprintf(fisier_output,"ULTIMU E NULL:(\n");
+    //         scoatere_ultima_echipa(&headcopy, fisier_output);
+    //         *nr = (*nr) -1;
     //     }
 
+}
+
+void scoatere_prima_echipa(Echipa **head, FILE *fisier_output)
+{
+    fprintf(fisier_output, "SUNT IN SCOTI PRIMA ECHIPA!\n");
+    Echipa *headcopy= (*head);
+    *head= (*head)->next_echipa;
+    // free(headcopy);
+}
+
+void scoatere_echipa_mijloc(Echipa **head, FILE *fisier_output)
+{
+    fprintf(fisier_output, "SUNT IN SCOTI V ECHIPA!\n");
+    fprintf(fisier_output, "%s %f\n\n", (*head)->next_echipa->nume_echipa, (*head)->next_echipa->scor_echipa);
+    // Echipa *headcopy= (*head)->next_echipa;
+    // (*head)->next_echipa = ((*head)->next_echipa)->next_echipa;
+    // free(headcopy);
+}
+
+void scoatere_ultima_echipa(Echipa **head, FILE *fisier_output)
+{
+    fprintf(fisier_output, "SUNT IN SCOTI ULTIMA ECHIPA!\n");
+    Echipa *headcopy= (*head)->next_echipa;
+    (*head)->next_echipa = NULL;
+    // free(headcopy);
 }

@@ -39,4 +39,10 @@ void scoatere_echipe(Echipa **, int , FILE *);
 
 void aflare_minim(Echipa *, double *, FILE *);
 
-void scoatere_efectiva(Echipa **, int , FILE *, int *);
+void scoatere_efectiva(Echipa **, double , FILE *, int *);
+
+void scoatere_prima_echipa( Echipa **, FILE *);
+
+void scoatere_echipa_mijloc(Echipa **, FILE *);
+
+void scoatere_ultima_echipa(Echipa **, FILE *);
