@@ -16,7 +16,7 @@ typedef struct Echipa
 {
     int nr_membri;
     char *nume_echipa;
-    int scor_echipa;
+    double scor_echipa;
     struct Membri *head_membri;
     struct Echipa *next_echipa;
 }Echipa;
@@ -25,7 +25,7 @@ void verif_citire(FILE *);
 
 void citire_echipa(Echipa **, FILE *, FILE *);
 
-void citire_membri(Membri **, FILE *, FILE *, int *);
+void citire_membri(Membri **, FILE *, FILE *, double *);
 
 void addAtBeginning_Membri(Membri **, Membri *);
 
@@ -37,6 +37,6 @@ int gasire_limita_echipe(int );
 
 void scoatere_echipe(Echipa **, int , FILE *);
 
-void aflare_minim(Echipa *, int *, FILE *);
+void aflare_minim(Echipa *, double *, FILE *);
 
 void scoatere_efectiva(Echipa **, int , FILE *, int *);
