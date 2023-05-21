@@ -78,7 +78,8 @@ void scoatere_echipe(Echipa **head, int nr, FILE *fisier_output)
     while(nr!=0)
         {
             aflare_minim(headcopy, &mini, fisier_output);
-            fprintf(fisier_output, "%d\n", mini);
+            fprintf(fisier_output, "mini=%d\n", mini);
+            scoatere_efectiva(&headcopy, mini, fisier_output, &nr);
             nr=0;
         }
 }
@@ -89,7 +90,36 @@ void aflare_minim(Echipa *head, int *mini, FILE *fisier_output)
     {
         if(head->scor_echipa< *mini) *mini = head->scor_echipa;
         head=head->next_echipa;
-        fprintf(fisier_output, "%d\n", *mini);
+        // fprintf(fisier_output, "%d\n", *mini);
     }
-    fprintf(fisier_output, "\n\n");
+    // fprintf(fisier_output, "\n\n");
+}
+
+void scoatere_efectiva(Echipa **head, int mini, FILE *fisier_output, int *nr)
+{
+    Echipa *headcopy= *head;
+    if(headcopy->scor_echipa == mini)
+        while(headcopy->scor_echipa == mini && headcopy!=NULL && (*nr)!=0)
+            {
+                // scoatere_prima_echipa(&headcopy, fisier_output);
+                (*nr)--;
+                fprintf(fisier_output, "SUNT IN WHILE!\n");
+            }
+    else fprintf(fisier_output, "N-AM FOST IN WHILE!\n");
+    // if(headcopy->next_echipa==NULL) exit(1);
+    // while((headcopy->next_echipa)->next_echipa!= NULL && (*nr)!=0)
+    //     {
+    //         if((headcopy->next_echipa)->scor_echipa == mini) 
+    //             {
+    //                 // scoatere_echipa_mijloc(&headcopy, fisier_output);
+    //                 (*nr)--;
+    //             }
+    //         headcopy= headcopy->next_echipa;
+    //     }
+    // if((headcopy->next_echipa)->scor_echipa == mini && (*nr)!=0) 
+    //     {
+    //         // scoatere_ultima_echipa(&headcopy, fisier_output);
+    //         (*nr)--;
+    //     }
+
 }
