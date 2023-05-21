@@ -5,6 +5,7 @@ int main()
     FILE *d, *r;
     int nr_echipe, i, j, n;
     Echipa *head, *headcopy;
+    head= headcopy;
     d=fopen("input.txt","r+t");
     r=fopen("output.txt","w+t");
     // verif_citire(d);
@@ -23,8 +24,8 @@ int main()
     //     afisare_nume_echipe(&headcopy, r);
     n = gasire_limita_echipe(nr_echipe);
     // fprintf(r, "%d", n);
-    eliminare_echipe(&headcopy, n, r);
-    // afisare_echipe(head,r);
+    scoatere_echipe(&head, n, r);
+
 
     return 0;
 }

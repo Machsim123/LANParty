@@ -35,12 +35,6 @@ void afisare_nume_echipe(Echipa **, FILE *);
 
 int gasire_limita_echipe(int );
 
-void eliminare_echipe(Echipa **, int , FILE *);
+void scoatere_echipe(Echipa **, int , FILE *);
 
-int aflare_minim(Echipa *, FILE *);
-
-void eliminare_partial(Echipa **, int *, int , FILE *);
-
-void eliminare_prima_structura(Echipa **);
-
-void eliminare_structura_oarecare(Echipa **);
+void aflare_minim(Echipa *, int *, FILE *);
