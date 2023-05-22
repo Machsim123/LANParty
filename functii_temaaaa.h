@@ -38,3 +38,5 @@ int gasire_limita_echipe(int );
 void scoatere_echipe(Echipa **, int , FILE *);
 
 void aflare_minim(Echipa *, double *, FILE *);
+
+void scoatere_echipa(Echipa **, int , FILE *);

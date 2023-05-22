@@ -92,8 +92,12 @@ void scoatere_echipe(Echipa **head, int nr, FILE *fisier_output)
             
             scoatere_echipa(&headcopy, mini, fisier_output);
             // fprintf(fisier_output, "\n\n\n\n\n\n IESIM DIN WHILE!\n");
-            nr= 0;
+            printf("PASUL %d!\n", nr);
+            nr--;
+            printf("PASUL %d!\n\n\n",nr);
         }
+    printf("IESIM DIN FUNCTIEEE\n");
+    *head= headcopy;
 }
 
 void aflare_minim(Echipa *head, double *mini, FILE *fisier_output)
@@ -114,13 +118,18 @@ void aflare_minim(Echipa *head, double *mini, FILE *fisier_output)
 void scoatere_echipa(Echipa **head, int mini, FILE *fisier_output)
 {
     Echipa *headcopy= (*head);
-    while(headcopy->next_echipa->scor_echipa!= mini && headcopy->next_echipa->next_echipa!= NULL)
+    if(headcopy->scor_echipa== mini)
+        {   
+            *head= headcopy->next_echipa;
+            printf("SUNT IN CAZ #1 echipa\n\n\n");
+        }
+    while(headcopy->next_echipa->scor_echipa!= mini && headcopy->next_echipa->next_echipa->next_echipa!= NULL)
         {   
             headcopy= headcopy->next_echipa;
             // printf("SUNT IN WHILE!\n");
         }
     headcopy->next_echipa= headcopy->next_echipa->next_echipa;
-    printf("AM TRECUT DE SCOATEREEEE\n");
+    // printf("AM TRECUT DE SCOATEREEEE\n");
     
     
 }
