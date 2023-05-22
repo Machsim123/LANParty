@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
         //fprintf(stdout, "%d", n);
         scoatere_echipe(&head, n, r);
         nr_echipe-= n;
-        printf("IESIT EFECTIV\n");
+        // printf("IESIT EFECTIV\n");
     }
     // headcopy= head;
     for (j = 0; j < nr_echipe; j++)
