@@ -40,3 +40,9 @@ void scoatere_echipe(Echipa **, int , FILE *);
 void aflare_minim(Echipa *, double *, FILE *);
 
 void scoatere_echipa(Echipa **, double , FILE *);
+
+typedef struct Queue{
+	// Data val;
+	struct Queue *front;
+	struct Queue *rear;
+}Queue;

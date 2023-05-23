@@ -19,7 +19,7 @@ void citire_echipa(Echipa **head, FILE *fisier_input, FILE *fisier_output)
     nume_echipa_buffer[strlen(nume_echipa_buffer)-2] = '\0';
     if(nume_echipa_buffer[strlen(nume_echipa_buffer)-1]==' ')
         nume_echipa_buffer[strlen(nume_echipa_buffer)-1] = '\0';
-    (*head)->nume_echipa=malloc(strlen(nume_echipa_buffer)*sizeof(char)+1*sizeof(char));
+    (*head)->nume_echipa=(char *)malloc(strlen(nume_echipa_buffer)*sizeof(char)+1*sizeof(char));
     strcpy((*head)->nume_echipa, nume_echipa_buffer);
     // fprintf(fisier_output, "%s",(*head)->nume_echipa);
     for(j=0; j<(*head)->nr_membri; j++)
@@ -41,8 +41,15 @@ void citire_membri(Membri **head_membri, FILE *fisier_input, FILE *fisier_output
     fscanf(fisier_input, "%s %s %d", nume_membru_buffer, prenume_membru_buffer, &((*head_membri)->scor_membru));
     nume_membru_buffer[strlen(nume_membru_buffer)] = '\0';
     prenume_membru_buffer[strlen(prenume_membru_buffer)] = '\0';
-
-    // DE BAGAT BUFFEREKE IN NUME
+    // if(nume_membru_buffer[strlen(nume_membru_buffer)-1]==' ')
+    //     nume_membru_buffer[strlen(nume_membru_buffer)-1] = '\0';
+    // if(prenume_membru_buffer[strlen(prenume_membru_buffer)-1]==' ')
+    //     prenume_membru_buffer[strlen(prenume_membru_buffer)-1] = '\0';
+    (*head_membri)->nume_membru=(char *)malloc(strlen(nume_membru_buffer)*sizeof(char)+1*sizeof(char));
+    (*head_membri)->prenume_membru=(char *)malloc(strlen(prenume_membru_buffer)*sizeof(char)+1*sizeof(char));
+    strcpy((*head_membri)->nume_membru, nume_membru_buffer);
+    strcpy((*head_membri)->prenume_membru, prenume_membru_buffer);
+    // DE BAGAT BUFFERELE IN NUME
     // fprintf(fisier_output, "%s %s %d\n", nume_membru_buffer, prenume_membru_buffer, (*head_membri)->scor_membru);
     (*head_membri)->next_membru = NULL;
     *scor_echipa += (*head_membri)->scor_membru;
@@ -81,23 +88,26 @@ void scoatere_echipe(Echipa **head, int nr, FILE *fisier_output)
 {
     // fprintf(fisier_output, "SUNT IN FCT!\n");
     double mini= 40000;
-    Echipa *headcopy= (*head);
+    Echipa *headcopy= NULL;
     // fprintf(fisier_output, "%d %s", headcopy->nr_membri, headcopy->nume_echipa);
     while(nr!=0)
         {
+            headcopy= (*head);
             // headcopy= (*head);
             aflare_minim(headcopy, &mini, fisier_output);
 
             // fprintf(stdout, "mini=%f\n", mini);
-            
-            scoatere_echipa(&headcopy, mini, fisier_output);
+            // if(headcopy->scor_echipa== mini)
+            //     headcopy= headcopy->next_echipa;
+            // else
+                scoatere_echipa(head, mini, fisier_output);
             // fprintf(fisier_output, "\n\n\n\n\n\n IESIM DIN WHILE!\n");
             // printf("PASUL %d!\n", nr);
             nr--;
             // printf("PASUL %d!\n",nr);
         }
     // printf("IESIM DIN FUNCTIEEE\n");
-    *head= headcopy;
+    // *head= headcopy;
 }
 
 void aflare_minim(Echipa *head, double *mini, FILE *fisier_output)
@@ -118,12 +128,14 @@ void aflare_minim(Echipa *head, double *mini, FILE *fisier_output)
 void scoatere_echipa(Echipa **head, double mini, FILE *fisier_output)
 {
     Echipa *headcopy= (*head);
-    if(headcopy->scor_echipa== mini)
+
+    if((*head)->scor_echipa == mini)
         {   
-            *head= headcopy->next_echipa;
-            printf("SUNT IN CAZ #1 echipa\n\n\n");
+            *head= (*head)->next_echipa;
+            printf("SUNT IN CAZ #1 echipa%s\n\n\n",(*head)->nume_echipa);
+            return ;
         }
-    while(headcopy->next_echipa->scor_echipa!= mini && headcopy->next_echipa->next_echipa->next_echipa!= NULL)
+    while(headcopy->next_echipa->scor_echipa!= mini && headcopy->next_echipa->next_echipa!= NULL)
         {   
             headcopy= headcopy->next_echipa;
             // printf("SUNT IN WHILE!\n");
@@ -133,6 +145,7 @@ void scoatere_echipa(Echipa **head, double mini, FILE *fisier_output)
             // printf("%s\n", headcopy->next_echipa->nume_echipa);
             headcopy->next_echipa= headcopy->next_echipa->next_echipa;
         }
+    return ;
     // printf("AM TRECUT DE SCOATEREEEE\n");
     
     

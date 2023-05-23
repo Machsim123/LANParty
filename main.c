@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
         nr_echipe-= n;
         // printf("IESIT EFECTIV\n");
     }
-    // headcopy= head;
+    headcopy= head;
     for (j = 0; j < nr_echipe; j++)
         afisare_nume_echipe(&headcopy, r);
         
