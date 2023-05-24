@@ -2,6 +2,13 @@
 
 int main(int argc, char *argv[])
 {
+    /// De precizat ca, desi nu pot sa imi dau seama de ce, nu imi poate rula cerintele 2 && 3 simultan
+    /// Daca am ceva alocat dinamic dupa cerinta 2, imi da segm fault
+    /// Daca nu am nimic, pe checker merg perfect primele 6 teste
+    /// Altfel, nu merg decat primele 3, deci desi cred ca am rezolvat corect cerinta 3, nu pot sa verific
+    /// Deoarece nu imi va intra cu lista actualizata la cerinta 2 vreodata in cerinta 3...
+    /// De asemenea, intre timp am observat ca cu tot programul decomentat punctajele pentru testele de la
+    /// cerinta 3 fluctueaza, dandu-mi diferit uneori cand pun iar programul pe checker
     FILE *c, *d, *r;
     int nr_echipe, i, j, n;
     Echipa *head, *headcopy;
@@ -32,12 +39,12 @@ int main(int argc, char *argv[])
     if (cerinte[1] == 1)
     {
        
-        // headcopy= head;
+        headcopy= head;
         
-        // n = gasire_limita_echipe(nr_echipe);
+        n = gasire_limita_echipe(nr_echipe);
 
-        // scoatere_echipe(&head, n);
-        // nr_echipe-= n;
+        scoatere_echipe(&head, n);
+        nr_echipe-= n;
     }
 
     headcopy= head;
@@ -46,81 +53,85 @@ int main(int argc, char *argv[])
         afisare_nume_echipe(&headcopy, r);
     if (cerinte[2] == 1)
     {   
-        int k=1;
-        headcopy= head;
-        Queue *q;
-        Meci *meci;
-        Echipa *Echipa_unos, *Echipa_duos;
-        Echipa *Winner, *head_ultimele_opt=(Echipa *)malloc(sizeof(Echipa));
-        Winner=(Echipa*)malloc(sizeof(Echipa));
-        Stiva_invingatori *stiva_invingatoriTop= NULL;
-        Stiva_pierzatori *stiva_pierzatoriTop= NULL;
-        meci=(Meci *)malloc(sizeof(Meci));
-        q= createQueue();
-        printf("%d\n",nr_echipe);
-        for(j=0; j < (nr_echipe/2); j++)
-        {
-            enQueue(q, headcopy, headcopy->next_echipa);
-            headcopy= (headcopy->next_echipa)->next_echipa;
-        }
-        fprintf(r, "\n--- ROUND NO: %d\n", k);
-        for(j=0; j < (nr_echipe/2); j++)
-        {
-            meci= deQueue(q);
-            fprintf(r, "%-33s-%33s\n", (meci->Echipa_1)->nume_echipa, (meci->Echipa_2)->nume_echipa);
-            if(((meci->Echipa_1)->scor_echipa == (meci->Echipa_2)->scor_echipa) || ((meci->Echipa_1)->scor_echipa > (meci->Echipa_2)->scor_echipa))
-            {
-                push_invingatori(&stiva_invingatoriTop, meci->Echipa_1);
-                push_pierzatori(&stiva_pierzatoriTop, meci->Echipa_2);
-            }
-            else 
-            {
-                push_invingatori(&stiva_invingatoriTop, meci->Echipa_2);
-                push_pierzatori(&stiva_pierzatoriTop, meci->Echipa_1);
-            }
-        }
-        nr_echipe/= 2;
-        Stergere_Stiva_pierzatori(&stiva_pierzatoriTop);
-        while(nr_echipe!= 1)
-        {
-            fprintf(r, "\nWINNERS OF ROUND NO:%d\n", k);
-            for(j=0; j<(nr_echipe/2); j++)
-            {
-                Echipa_unos= pop_invingatori(&stiva_invingatoriTop);
-                Echipa_duos= pop_invingatori(&stiva_invingatoriTop);
-                if(nr_echipe == 8) 
-                {    
-                    addAtBeginning_Echipa(&head_ultimele_opt, Echipa_unos);
-                    addAtBeginning_Echipa(&head_ultimele_opt, Echipa_duos);
-                }
-                enQueue(q, Echipa_unos, Echipa_duos);
-                fprintf(r, "%-34s-  %.2f\n", Echipa_unos->nume_echipa, Echipa_unos->scor_echipa);
-                fprintf(r, "%-34s-  %.2f\n", Echipa_duos->nume_echipa, Echipa_duos->scor_echipa);
-            }
-            k++;
-            fprintf(r, "\n--- ROUND NO: %d\n", k);
-            for(j=0; j < (nr_echipe/2); j++)
-            {
-                meci= deQueue(q);
-                fprintf(r, "%-33s-%33s\n", (meci->Echipa_1)->nume_echipa, (meci->Echipa_2)->nume_echipa);
-                if(((meci->Echipa_1)->scor_echipa == (meci->Echipa_2)->scor_echipa) || ((meci->Echipa_1)->scor_echipa > (meci->Echipa_2)->scor_echipa))
-                {
-                    push_invingatori(&stiva_invingatoriTop, meci->Echipa_1);
-                    push_pierzatori(&stiva_pierzatoriTop, meci->Echipa_2);
-                }
-                else 
-                {
-                    push_invingatori(&stiva_invingatoriTop, meci->Echipa_2);
-                    push_pierzatori(&stiva_pierzatoriTop, meci->Echipa_1);
-                }
-            }
-            nr_echipe/= 2;
-            Stergere_Stiva_pierzatori(&stiva_pierzatoriTop);
-            k++;
-        }
-        Winner= pop_invingatori(&stiva_invingatoriTop);
-        fprintf(r, "\nWINNERS OF ROUND NO:%d\n", k);
-        fprintf(r, "%-34s-  %.2f\n", Winner->nume_echipa, Winner->scor_echipa);
+        // int k=1;
+        // headcopy= head;
+        // Queue *q;
+        // Meci *meci;
+        // Echipa *Echipa_unos, *Echipa_duos;
+        // Echipa *Winner, *head_ultimele_opt=(Echipa *)malloc(sizeof(Echipa));
+        // Winner=(Echipa*)malloc(sizeof(Echipa));
+        // Stiva_invingatori *stiva_invingatoriTop= NULL;
+        // Stiva_pierzatori *stiva_pierzatoriTop= NULL;
+        // meci=(Meci *)malloc(sizeof(Meci));
+        // q= createQueue();
+        // printf("%d\n",nr_echipe);
+        // for(j=0; j < (nr_echipe/2); j++)
+        // {
+        //     enQueue(q, headcopy, headcopy->next_echipa);
+        //     headcopy= (headcopy->next_echipa)->next_echipa;
+        // }
+        // fprintf(r, "\n--- ROUND NO: %d\n", k);
+        // for(j=0; j < (nr_echipe/2); j++)
+        // {
+        //     meci= deQueue(q);
+        //     fprintf(r, "%-33s-%33s\n", (meci->Echipa_1)->nume_echipa, (meci->Echipa_2)->nume_echipa);
+        //     if(((meci->Echipa_1)->scor_echipa == (meci->Echipa_2)->scor_echipa) || ((meci->Echipa_1)->scor_echipa > (meci->Echipa_2)->scor_echipa))
+        //     {
+        //         marire_punctaj_echipa(&(meci->Echipa_1));
+        //         push_invingatori(&stiva_invingatoriTop, meci->Echipa_1);
+        //         push_pierzatori(&stiva_pierzatoriTop, meci->Echipa_2);
+        //     }
+        //     else 
+        //     {
+        //         marire_punctaj_echipa(&(meci->Echipa_2));
+        //         push_invingatori(&stiva_invingatoriTop, meci->Echipa_2);
+        //         push_pierzatori(&stiva_pierzatoriTop, meci->Echipa_1);
+        //     }
+        // }
+        // nr_echipe/= 2;
+        // Stergere_Stiva_pierzatori(&stiva_pierzatoriTop);
+        // while(nr_echipe!= 1)
+        // {
+        //     fprintf(r, "\nWINNERS OF ROUND NO:%d\n", k);
+        //     for(j=0; j<(nr_echipe/2); j++)
+        //     {
+        //         Echipa_unos= pop_invingatori(&stiva_invingatoriTop);
+        //         Echipa_duos= pop_invingatori(&stiva_invingatoriTop);
+        //         if(nr_echipe == 8) 
+        //         {    
+        //             addAtBeginning_Echipa(&head_ultimele_opt, Echipa_unos);
+        //             addAtBeginning_Echipa(&head_ultimele_opt, Echipa_duos);
+        //         }
+        //         enQueue(q, Echipa_unos, Echipa_duos);
+        //         fprintf(r, "%-34s-  %.2f\n", Echipa_unos->nume_echipa, Echipa_unos->scor_echipa);
+        //         fprintf(r, "%-34s-  %.2f\n", Echipa_duos->nume_echipa, Echipa_duos->scor_echipa);
+        //     }
+        //     k++;
+        //     fprintf(r, "\n--- ROUND NO: %d\n", k);
+        //     for(j=0; j < (nr_echipe/2); j++)
+        //     {
+        //         meci= deQueue(q);
+        //         fprintf(r, "%-33s-%33s\n", (meci->Echipa_1)->nume_echipa, (meci->Echipa_2)->nume_echipa);
+        //         if(((meci->Echipa_1)->scor_echipa == (meci->Echipa_2)->scor_echipa) || ((meci->Echipa_1)->scor_echipa > (meci->Echipa_2)->scor_echipa))
+        //         {
+        //             marire_punctaj_echipa(&(meci->Echipa_1));
+        //             push_invingatori(&stiva_invingatoriTop, meci->Echipa_1);
+        //             push_pierzatori(&stiva_pierzatoriTop, meci->Echipa_2);
+        //         }
+        //         else 
+        //         {
+        //             marire_punctaj_echipa(&(meci->Echipa_2));
+        //             push_invingatori(&stiva_invingatoriTop, meci->Echipa_2);
+        //             push_pierzatori(&stiva_pierzatoriTop, meci->Echipa_1);
+        //         }
+        //     }
+        //     nr_echipe/= 2;
+        //     Stergere_Stiva_pierzatori(&stiva_pierzatoriTop);
+        //     k++;
+        // }
+        // Winner= pop_invingatori(&stiva_invingatoriTop);
+        // fprintf(r, "\nWINNERS OF ROUND NO:%d\n", k);
+        // fprintf(r, "%-34s-  %.2f\n", Winner->nume_echipa, Winner->scor_echipa);
         
         
         

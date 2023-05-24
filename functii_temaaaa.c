@@ -222,3 +222,21 @@ void Stergere_Stiva_pierzatori(Stiva_pierzatori **top)
         free(temp);
     }
 }
+
+void marire_punctaj_echipa(Echipa **head)
+{
+    Echipa *headcopy= (*head);
+    int i;
+    for(i=0; i< (headcopy->nr_membri) ; i++)
+        marire_punctaj_membru(&(headcopy->head_membri));
+    headcopy->scor_echipa+= 1;
+    // *head= headcopy;
+}
+
+void marire_punctaj_membru(Membri **head)
+{
+    Membri *headcopy= (*head);
+    headcopy->scor_membru+= 1;
+    headcopy= headcopy->next_membru;
+    // *head= headcopy;
+}

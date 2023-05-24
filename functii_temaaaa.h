@@ -82,3 +82,7 @@ Echipa *pop_invingatori(Stiva_invingatori **);
 Echipa *pop_pierzatori(Stiva_pierzatori **);
 
 void Stergere_Stiva_pierzatori(Stiva_pierzatori **);
+
+void marire_punctaj_echipa(Echipa **);
+
+void marire_punctaj_membru(Membri **);
