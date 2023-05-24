@@ -32,6 +32,8 @@ void citire_echipa(Echipa **head, FILE *fisier_input)
 
     (*head)->scor_echipa/= (*head)->nr_membri;
     (*head)->next_echipa = NULL;
+
+    // free(head_copy_membri);
 }
 
 void citire_membri(Membri **head_membri, FILE *fisier_input, double *scor_echipa)
@@ -84,7 +86,8 @@ int gasire_limita_echipe(int nr_echipe)
 void scoatere_echipe(Echipa **head, int nr)
 {
     double mini= 40000;
-    Echipa *headcopy= NULL;
+    Echipa *headcopy= (Echipa*) malloc(sizeof(Echipa));
+    headcopy= (*head);
     while(nr!=0)
         {
             headcopy= (*head);
@@ -93,7 +96,9 @@ void scoatere_echipe(Echipa **head, int nr)
             scoatere_echipa(head, mini);
 
             nr--;
+            // headcopy= (*head);
         }
+    // *head= headcopy;
 }
 
 void aflare_minim(Echipa *head, double *mini)
@@ -110,7 +115,7 @@ void aflare_minim(Echipa *head, double *mini)
 
 void scoatere_echipa(Echipa **head, double mini)
 {
-    Echipa *headcopy= (*head);
+    Echipa *headcopy= (*head), *head_free;
 
     if((*head)->scor_echipa == mini)
         {   
@@ -120,51 +125,100 @@ void scoatere_echipa(Echipa **head, double mini)
     while(headcopy->next_echipa->scor_echipa!= mini && headcopy->next_echipa->next_echipa!= NULL)  
         headcopy= headcopy->next_echipa;
     if(headcopy->next_echipa->scor_echipa== mini)
-        headcopy->next_echipa= headcopy->next_echipa->next_echipa;
-    return ;
+        {   
+            head_free=headcopy->next_echipa;
+            headcopy->next_echipa= headcopy->next_echipa->next_echipa;
+        }
+    
+    free(head_free);
 }
 
 Queue* createQueue()
 {
-    printf("INTRU IN FCT\n");
-    Queue *q;
-	q= (Queue *)malloc(sizeof(Queue));
-	q->front=(Meci *)malloc(sizeof(Meci));
-    q->rear=(Meci *)malloc(sizeof(Meci));
-    q->front= NULL;
-    q->rear= NULL;
-    printf("IES DIN FCT\n");
+    Queue* q = (Queue*)malloc(sizeof(Queue));
+    if (q == NULL)
+        return NULL;
+
+    q->front = NULL;
+    q->rear = NULL;
     return q;
 }
 
-//  void enQueue(Queue *q, Echipa *Echipa_uno, Echipa *Echipa_dos)
-//  {
-// 	Meci* newNode=(Meci*)malloc(sizeof(Meci));
-// 	newNode->Echipa_1= (Echipa *)malloc(sizeof(Echipa));
-//     newNode->Echipa_1= Echipa_uno;
-//     newNode->Echipa_2= (Echipa *)malloc(sizeof(Echipa));
-//     newNode->Echipa_2= Echipa_dos;
-// 	newNode->next_meci=NULL;
-// 	if (q->rear==NULL) q->rear=newNode;
-// 	else
-//         {
-// 		    (q->rear)->next_meci=newNode;
-// 		    (q->rear)=newNode;
-// 	    }
-// 	if (q->front==NULL) q->front=q->rear; 
-// }
+void enQueue(Queue *q, Echipa *Echipa_uno, Echipa *Echipa_dos)
+{
+    printf("SUNT IN enQUEUE\n");
+	Meci* newNode=(Meci*)malloc(sizeof(Meci));
+	newNode->Echipa_1= (Echipa *)malloc(sizeof(Echipa));
+    newNode->Echipa_1= Echipa_uno;
+    newNode->Echipa_2= (Echipa *)malloc(sizeof(Echipa));
+    newNode->Echipa_2= Echipa_dos;
+	newNode->next_meci=NULL;
+	if (q->rear==NULL) q->rear=newNode;
+	else
+        {
+		    (q->rear)->next_meci=newNode;
+		    (q->rear)=newNode;
+	    }
+	if (q->front==NULL) q->front=q->rear; 
+}
  
-// Data deQueue(Queue*q) {  
-// 	Node* aux; Data d;
-// 	if (isEmpty(q)) return INT_MIN;
+Meci *deQueue(Queue *q) 
+{  
+    Meci *aux;
 	
-// 	aux=q->front; 
-// 	d=aux->val;
-// 	q->front=(q->front)->next;
-// 	free(aux);
-// 	return d;  	
-// } 
+	aux=q->front;
+	q->front=(q->front)->next_meci;
+	return aux;
+}
 
-// int isEmpty_cozi(Queue*q){
-// 	return (q->front==NULL);
-// }
+int isEmpty_cozi(Queue*q)
+{
+	return (q->front==NULL);
+}
+
+void push_invingatori(Stiva_invingatori **top, Echipa *invingator)
+{
+    Stiva_invingatori *newNode=(Stiva_invingatori*)malloc(sizeof(Stiva_invingatori));
+    newNode->Invingator=  (Echipa*)malloc(sizeof(Echipa));
+    newNode->Invingator= invingator;
+    newNode->next_invingator= *top;
+    *top= newNode;
+}
+
+void push_pierzatori(Stiva_pierzatori **top, Echipa *pierzator)
+{
+    Stiva_pierzatori *newNode=(Stiva_pierzatori*)malloc(sizeof(Stiva_pierzatori));
+    newNode->Pierzator= (Echipa*)malloc(sizeof(Echipa));
+    newNode->Pierzator= pierzator;
+    newNode->next_pierzator= *top;
+    *top= newNode;
+}
+
+Echipa *pop_invingatori(Stiva_invingatori **top)
+{
+    Stiva_invingatori *temp= (*top);
+    Echipa *aux= temp->Invingator;
+    *top= (*top)->next_invingator;
+    free(temp);
+    return aux;
+}
+
+Echipa *pop_pierzatori(Stiva_pierzatori **top)
+{
+    Stiva_pierzatori *temp= (*top);
+    Echipa *aux= temp->Pierzator;
+    *top= (*top)->next_pierzator;
+    free(temp);
+    return aux;
+}
+
+void Stergere_Stiva_pierzatori(Stiva_pierzatori **top)
+{
+    Stiva_pierzatori *temp;
+    while((*top)!=NULL)
+    {
+        temp=(*top);
+        *top= (*top)->next_pierzator;
+        free(temp);
+    }
+}

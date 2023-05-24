@@ -23,16 +23,27 @@ typedef struct Echipa
 
 typedef struct Meci
 { 
-    Echipa *Echipa_1;
-    Echipa *Echipa_2;
+    struct Echipa *Echipa_1;
+    struct Echipa *Echipa_2;
     struct Meci *next_meci;
 }Meci;
 
 typedef struct Queue
 {
-	struct Meci *front;
-    struct Meci *rear;
+    struct Meci *front, *rear;
 }Queue;
+
+typedef struct Stiva_invingatori
+{
+    Echipa *Invingator;
+    struct Stiva_invingatori *next_invingator;
+}Stiva_invingatori;
+
+typedef struct Stiva_pierzatori
+{
+    Echipa *Pierzator;
+    struct Stiva_pierzatori *next_pierzator;
+}Stiva_pierzatori;
 
 void verif_citire(FILE *);
 
@@ -55,3 +66,19 @@ void aflare_minim(Echipa *, double *);
 void scoatere_echipa(Echipa **, double );
 
 Queue* createQueue();
+
+void enQueue(Queue *, Echipa *, Echipa *);
+
+Meci *deQueue(Queue *);
+
+int isEmpty_cozi(Queue *);
+
+void push_invingatori(Stiva_invingatori **, Echipa *);
+
+void push_pierzatori(Stiva_pierzatori **, Echipa *);
+
+Echipa *pop_invingatori(Stiva_invingatori **);
+
+Echipa *pop_pierzatori(Stiva_pierzatori **);
+
+void Stergere_Stiva_pierzatori(Stiva_pierzatori **);
