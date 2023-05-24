@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
         Queue *q;
         Meci *meci;
         Echipa *Echipa_unos, *Echipa_duos;
-        Echipa *Winner;
+        Echipa *Winner, *head_ultimele_opt=(Echipa *)malloc(sizeof(Echipa));
         Winner=(Echipa*)malloc(sizeof(Echipa));
         Stiva_invingatori *stiva_invingatoriTop= NULL;
         Stiva_pierzatori *stiva_pierzatoriTop= NULL;
@@ -88,6 +88,11 @@ int main(int argc, char *argv[])
             {
                 Echipa_unos= pop_invingatori(&stiva_invingatoriTop);
                 Echipa_duos= pop_invingatori(&stiva_invingatoriTop);
+                if(nr_echipe == 8) 
+                {    
+                    addAtBeginning_Echipa(&head_ultimele_opt, Echipa_unos);
+                    addAtBeginning_Echipa(&head_ultimele_opt, Echipa_duos);
+                }
                 enQueue(q, Echipa_unos, Echipa_duos);
                 fprintf(r, "%-34s-  %.2f\n", Echipa_unos->nume_echipa, Echipa_unos->scor_echipa);
                 fprintf(r, "%-34s-  %.2f\n", Echipa_duos->nume_echipa, Echipa_duos->scor_echipa);
@@ -116,6 +121,7 @@ int main(int argc, char *argv[])
         Winner= pop_invingatori(&stiva_invingatoriTop);
         fprintf(r, "\nWINNERS OF ROUND NO:%d\n", k);
         fprintf(r, "%-34s-  %.2f\n", Winner->nume_echipa, Winner->scor_echipa);
+        
         
         
     }
