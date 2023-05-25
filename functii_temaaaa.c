@@ -4,8 +4,8 @@ void verif_citire(FILE *fis)
 {
     if (fis == NULL)
         printf("Fisierul nu a putut fi deschis! \n");
-    else
-        printf("Fisierul a fost deschis cu succes! \n");
+    //else
+        // printf("Fisierul a fost deschis cu succes! \n");
 }
 
 void citire_echipa(Echipa **head, FILE *fisier_input)
@@ -146,7 +146,7 @@ Queue* createQueue()
 
 void enQueue(Queue *q, Echipa *Echipa_uno, Echipa *Echipa_dos)
 {
-    printf("SUNT IN enQUEUE\n");
+    // printf("SUNT IN enQUEUE\n");
 	Meci* newNode=(Meci*)malloc(sizeof(Meci));
 	newNode->Echipa_1= (Echipa *)malloc(sizeof(Echipa));
     newNode->Echipa_1= Echipa_uno;
