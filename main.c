@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[])
 {
-    /// Ceva se blocheaza in cerinta nr. 3..
+    //
     FILE *c, *d, *r;
     int nr_echipe, i, j, n;
     Echipa *head= NULL, *headcopy= NULL;
