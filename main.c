@@ -1,4 +1,4 @@
-#include "functii_temaaaa.h"
+#include "functii_tema.h"
 
 int main(int argc, char *argv[])
 {
